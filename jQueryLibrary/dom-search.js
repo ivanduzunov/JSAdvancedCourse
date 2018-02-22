@@ -1,5 +1,4 @@
 function domSearch(selector, isCaseSensitive) {
-    //todo: Search function does't work properly, have to add delete function
     let container = $(selector)
     let addElementDiv = $('<div>')
     let searchElementsDiv = $('<div>')
@@ -39,17 +38,6 @@ function domSearch(selector, isCaseSensitive) {
     container.append(searchElementsDiv)
     container.append(resultsDiv)
 
-    let searchText = searchInput.text()
-    let elements = $('#list-item').children
-
-    for (let item of elements) {
-        let text = item.strong.text()
-        console.log(text)
-        if (!text.contains(searchText)) {
-            item.css('display', 'none')
-        }
-    }
-
     addLink.on('click', function (event) {
         event.preventDefault()
         let elementToAdd = addInput.val()
@@ -60,6 +48,10 @@ function domSearch(selector, isCaseSensitive) {
         itemLink.attr('href', '#')
         itemLink.addClass('button')
         itemLink.text('X')
+        itemLink.on('click', function (event) {
+            event.preventDefault()
+            $(this).parent().remove()
+        })
         let strongElement = $('<strong>')
         strongElement.text(elementToAdd)
         li.append(itemLink)
@@ -68,4 +60,23 @@ function domSearch(selector, isCaseSensitive) {
     })
 
 
+    searchInput.on('input', function () {
+        let text = $(this).val();
+        $('.list-item').each((i, li) => matches(li, text));
+    })
+
+    function matches(li, text) {
+        $(li).css('display', 'block');
+        if (isCaseSensitive) {
+            let regex = new RegExp('' + text + '', '');
+            if (!regex.test($(li).find('strong').text())) {
+                $(li).css('display', 'none');
+            }
+        } else {
+            let regex = new RegExp('' + text + '', 'i');
+            if (!regex.test($(li).find('strong').text())) {
+                $(li).css('display', 'none');
+            }
+        }
+    }
 }
