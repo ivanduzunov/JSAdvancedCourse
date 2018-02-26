@@ -1,16 +1,11 @@
-function solve() {
-    function getFibonator() {
-        let f0 = 0, f1 = 1;
-        return function () {
-            let f2 = f0 + f1;
-            f0 = f1;
-            f1 = f2;
-            return f1;
-        }
+function getFibonator() {
+    let first = 0
+    let second = 1
+    
+    return function () {
+        let next = first + second
+        first = second
+        second = next
+        return first
     }
-
-    let fib = getFibonator();
-    fib(); // 1
-    fib(); // 1
-    fib(); // 2
 }
