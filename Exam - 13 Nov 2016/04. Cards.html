@@ -4,23 +4,51 @@
     <title>Cards</title>
     <style>
         div.card {
-            display: inline-block; padding: 10px; margin: 10px;
-            width: 50px; height: 80px; background: #EEE;
-            border: 3px solid #DDD; border-radius: 5px;
-            font-size: 18pt; text-align: center; line-height: 75px;
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            width: 50px;
+            height: 80px;
+            background: #EEE;
+            border: 3px solid #DDD;
+            border-radius: 5px;
+            font-size: 18pt;
+            text-align: center;
+            line-height: 75px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
-<div id="main"></div>
+<div id="main">
+
+</div>
 <script>
     function cardDeckBuilder(selector) {
-        // TODO: return the card builder
+        const validSuits = {
+            'S': '\u2660',
+            'H': '\u2665',
+            'D': '\u2666',
+            'C': '\u2663 '
+        }
+        return {
+            addCard: function (type, suit) {
+                let cardString = `${type} ${validSuits[suit]}`
+                let cartDiv = $(`<div class='card'>${cardString}</div>`)
+                cartDiv.click(this.reverseCards)
+                $(selector).append(cartDiv)
+            },
+            reverseCards: function () {
+                let cards = $("div.card").toArray()
+                cards.reverse()
+                $(selector).append(cards)
+            }
+        }
     }
+
 </script>
 <script>
-    $(function() {
+    $(function () {
         let builder = cardDeckBuilder("#main");
         builder.addCard("10", "D");
         builder.addCard("K", "S");
